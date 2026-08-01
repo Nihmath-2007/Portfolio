@@ -1393,7 +1393,7 @@
       </ul>
 
       <div class="nav-actions">
-        <a href="Mohamed_Nihmathullah_S_Resume_ATS.pdf" download="Mohamed_Nihmathullah_S_Resume_ATS.pdf" target="_blank" class="btn btn-primary" title="Download Resume PDF">
+        <a href="Mohamed_Nihmathullah_S_Resume_ATS.pdf" download="Mohamed_Nihmathullah_S_Resume_ATS.pdf" onclick="handleResumeDownload(event)" class="btn btn-primary" title="Download Resume PDF">
           <i class="fa-solid fa-download"></i> Resume PDF
         </a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation">
@@ -1419,11 +1419,14 @@
         </p>
 
         <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary">
-            Explore Work <i class="fa-solid fa-arrow-down"></i>
+          <a href="Mohamed_Nihmathullah_S_Resume_ATS.pdf" download="Mohamed_Nihmathullah_S_Resume_ATS.pdf" onclick="handleResumeDownload(event)" class="btn btn-primary">
+            <i class="fa-solid fa-file-arrow-down"></i> Download Resume PDF
           </a>
-          <a href="#contact" class="btn btn-outline">
-            Get in Touch <i class="fa-solid fa-envelope"></i>
+          <a href="Mohamed_Nihmathullah_S_Resume_ATS.pdf" target="_blank" class="btn btn-outline" title="Open PDF in new tab">
+            <i class="fa-solid fa-eye"></i> View PDF
+          </a>
+          <a href="#projects" class="btn btn-outline">
+            Explore Work <i class="fa-solid fa-arrow-down"></i>
           </a>
         </div>
 
@@ -1929,6 +1932,7 @@
         <a href="#skills" class="footer-link">Skills</a>
         <a href="#projects" class="footer-link">Projects</a>
         <a href="#experience" class="footer-link">Experience</a>
+        <a href="Mohamed_Nihmathullah_S_Resume_ATS.pdf" download="Mohamed_Nihmathullah_S_Resume_ATS.pdf" onclick="handleResumeDownload(event)" class="footer-link">Resume PDF</a>
         <a href="https://github.com" target="_blank" class="footer-link">GitHub</a>
       </div>
       <p>© 2026 Mohamed Nihmathullah S. Data Analyst Portfolio • Engineered for Data & Business Intelligence.</p>
@@ -2023,13 +2027,32 @@
       });
     }
 
-    // --- Print / Download Resume PDF ---
+    // --- Download Resume PDF with Cross-Browser & File Protocol Support ---
+    function handleResumeDownload(event) {
+      const pdfPath = 'Mohamed_Nihmathullah_S_Resume_ATS.pdf';
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+
+      if (toast && toastMsg) {
+        toastMsg.innerText = 'Downloading Resume PDF...';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+
+      // If running on local file system (file:// protocol)
+      if (window.location.protocol === 'file:') {
+        // Prevent default target="_blank" conflicts on local file URLs
+        const tempLink = document.createElement('a');
+        tempLink.href = pdfPath;
+        tempLink.download = 'Mohamed_Nihmathullah_S_Resume_ATS.pdf';
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+      }
+    }
+
     function downloadResumePDF() {
-      const link = document.createElement('a');
-      link.href = 'Mohamed_Nihmathullah_S_Resume_ATS.pdf';
-      link.download = 'Mohamed_Nihmathullah_S_Resume_ATS.pdf';
-      link.target = '_blank';
-      link.click();
+      handleResumeDownload();
     }
 
     // --- Filter Skills Matrix ---
